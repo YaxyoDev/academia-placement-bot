@@ -124,15 +124,7 @@ async def menu_admins(callback: CallbackQuery, state: FSMContext) -> None:
 # ═══════════════════════════ READING ═══════════════════════════
 @router.callback_query(F.data == "adm:reading:addp")
 async def reading_add_passage(callback: CallbackQuery, state: FSMContext) -> None:
-    if await crud.list_passages():
-        await callback.answer()
-        await callback.message.answer(
-            "⚠️ Bazada allaqachon bitta passage bor. Faqat <b>1 ta</b> passage bo'lishi mumkin.\n"
-            "Yangisini qo'shish uchun avval «🗑 Passage o'chirish» orqali eskisini o'chiring.",
-            parse_mode="HTML",
-            reply_markup=kb.reading_menu(),
-        )
-        return
+    # Ko'p passage qo'shsa bo'ladi — har test random bittasini tanlaydi.
     await state.set_state(AdminStates.passage_title)
     await callback.answer()
     await callback.message.answer("📖 Passage sarlavhasini yuboring:")
@@ -228,15 +220,7 @@ async def reading_list(callback: CallbackQuery) -> None:
 # ═══════════════════════════ LISTENING ═══════════════════════════
 @router.callback_query(F.data == "adm:listening:adda")
 async def listening_add_audio(callback: CallbackQuery, state: FSMContext) -> None:
-    if await crud.list_audios():
-        await callback.answer()
-        await callback.message.answer(
-            "⚠️ Bazada allaqachon bitta audio bor. Faqat <b>1 ta</b> audio bo'lishi mumkin.\n"
-            "Yangisini qo'shish uchun avval «🗑 Audio o'chirish» orqali eskisini o'chiring.",
-            parse_mode="HTML",
-            reply_markup=kb.listening_menu(),
-        )
-        return
+    # Ko'p audio qo'shsa bo'ladi — har test random bittasini tanlaydi.
     await state.set_state(AdminStates.audio_file)
     await callback.answer()
     await callback.message.answer("🎧 Audio faylni yuboring (audio, voice yoki document):")
@@ -343,15 +327,7 @@ async def listening_list(callback: CallbackQuery) -> None:
 # ═══════════════════════════ WRITING ═══════════════════════════
 @router.callback_query(F.data == "adm:writing:add")
 async def writing_add(callback: CallbackQuery, state: FSMContext) -> None:
-    if await crud.list_writing_topics():
-        await callback.answer()
-        await callback.message.answer(
-            "⚠️ Bazada allaqachon bitta Writing topic bor. Faqat <b>1 ta</b> topic bo'lishi mumkin.\n"
-            "Yangisini qo'shish uchun avval «🗑 Topic o'chirish» orqali eskisini o'chiring.",
-            parse_mode="HTML",
-            reply_markup=kb.writing_menu(),
-        )
-        return
+    # Ko'p Writing topic qo'shsa bo'ladi — har test random bittasini tanlaydi.
     await state.set_state(AdminStates.writing_topic_add)
     await callback.answer()
     await callback.message.answer("✍️ Yangi Writing topic matnini yuboring:")

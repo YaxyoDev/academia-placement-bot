@@ -45,7 +45,7 @@ async def show_result(message: Message, state: FSMContext) -> None:
     # ── Natija xabari ──
     text = (
         f"👤 <b>{html.escape(full_name)}</b>\n\n"
-        f"📝 Grammar:   {g_pct:g}% — {percentage_to_level(g_pct)}\n"
+        f"📝 Grammar &amp; Vocabulary: {g_pct:g}% — {percentage_to_level(g_pct)}\n"
         f"📖 Reading:   {r_pct:g}% — {percentage_to_level(r_pct)}\n"
         f"🎧 Listening: {l_pct:g}% — {percentage_to_level(l_pct)}\n"
         f"✍️ Writing:   {w_pct:g}% — {percentage_to_level(w_pct)}\n"

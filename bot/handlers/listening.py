@@ -53,33 +53,29 @@ async def listening_play_audio(callback: CallbackQuery, state: FSMContext) -> No
         await _to_writing(callback.message, state)
         return
 
-    # Audioni yuborish (tagida "Savollarni boshlash" tugmasi bilan)
+    # Audioni yuborish (tagida "Savollarni boshlash" tugmasi bilan).
+    # Audio chatda qoladi — foydalanuvchi savollar paytida qayta tinglay oladi.
     kb = listening_quiz_keyboard()
-    sent = None
     for sender in ("answer_audio", "answer_voice", "answer_document"):
         try:
-            sent = await getattr(callback.message, sender)(file_id, reply_markup=kb)
+            await getattr(callback.message, sender)(file_id, reply_markup=kb)
             break
         except Exception:  # noqa: BLE001
             continue
 
-    # Audio xabar id sini saqlaymiz — savollar boshlanganda o'chiriladi
-    await state.update_data(listening_audio_msg_id=sent.message_id if sent else None)
-
 
 @router.callback_query(F.data == "listen_quiz")
 async def listening_questions_start(callback: CallbackQuery, state: FSMContext) -> None:
-    """2-bosqich: audioni o'chirib, savollarni boshlash."""
+    """2-bosqich: savollarni boshlash (audio chatda qoladi — qayta tinglsa bo'ladi)."""
     data = await state.get_data()
     questions = data.get("pending_listening", [])
-    audio_msg_id = data.get("listening_audio_msg_id")
 
     await callback.answer()
 
-    # Audioni o'chirish (qayta tinglab bo'lmasligi uchun)
-    if audio_msg_id and callback.message:
+    # "Savollarni boshlash" tugmasini olib tashlaymiz (audio xabar o'zi qoladi)
+    if callback.message:
         try:
-            await callback.bot.delete_message(callback.message.chat.id, audio_msg_id)
+            await callback.message.edit_reply_markup(reply_markup=None)
         except Exception:  # noqa: BLE001
             pass
 

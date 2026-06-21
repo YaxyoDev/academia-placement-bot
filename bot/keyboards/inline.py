@@ -45,6 +45,13 @@ def listening_quiz_keyboard() -> InlineKeyboardMarkup:
     return b.as_markup()
 
 
+def speaking_skip_keyboard() -> InlineKeyboardMarkup:
+    """Speaking topic uchun 'Javob bera olmayman' (o'sha topicga 0 ball)."""
+    b = InlineKeyboardBuilder()
+    b.button(text="⏭ Javob bera olmayman", callback_data="speak_skip")
+    return b.as_markup()
+
+
 def new_test_keyboard() -> InlineKeyboardMarkup:
     b = InlineKeyboardBuilder()
     b.button(text="🔄 Yangi test", callback_data="begin_test_new")

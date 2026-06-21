@@ -12,7 +12,7 @@ router = Router(name="start")
 WELCOME_TEXT = (
     "🎓 Academia IELTS ga xush kelibsiz!\n\n"
     "Placement test orqali siz ingliz tili darajangizni aniqlaymiz.\n"
-    "Test 5 bo'limdan iborat: Grammar, Reading, Listening, Writing va Speaking.\n\n"
+    "Test 5 bo'limdan iborat: Grammar & Vocabulary, Reading, Listening, Writing va Speaking.\n\n"
     "Boshlash uchun ismingizni kiriting:"
 )
 
@@ -23,7 +23,7 @@ HELP_TEXT = (
     "🔹 /restart — testni boshqatdan boshlash\n"
     "🔹 /help — shu qo'llanma\n\n"
     "📝 <b>Test 5 bo'limdan iborat:</b>\n"
-    "1️⃣ Grammar — 20 ta savol (A/B/C/D)\n"
+    "1️⃣ Grammar & Vocabulary — 20 ta savol (A/B/C/D)\n"
     "2️⃣ Reading — matn o'qib, savollarga javob\n"
     "3️⃣ Listening — audio tinglab, savollarga javob\n"
     "4️⃣ Writing — mavzu bo'yicha insho yozasiz (matn)\n"

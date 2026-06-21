@@ -51,6 +51,11 @@ MAVZU: {topic}
 FOYDALANUVCHI MATNI:
 {text}
 
+MUHIM: Inshoning uzunligi (so'z soni: {word_count} ta) shu MAVZU talabiga mosligini ham \
+hisobga ol. Sobit so'z chegarasi yo'q — mavzuning kengligi/murakkabligidan kelib chiqib, \
+javob mavzuni yetarlicha ochib berganini o'zing bahola. Mavzu uchun juda qisqa yoki yuzaki \
+yozilgan bo'lsa, ballni pasaytir.
+
 Faqat JSON qaytar: {{"score": <0 dan 10 gacha butun son>, "feedback": "<o'zbek tilida 2-3 gaplik qisqa izoh>"}}
 Agar matn bo'sh yoki mavzuga umuman aloqasiz bo'lsa, 0 ball ber."""
 
@@ -59,6 +64,12 @@ ingliz tilida gapirib, ovozli javob yubordi (audio biriktirilgan). Uning ingliz 
 gapirish darajasini talaffuz, ravonlik, grammatika va lug'at bo'yicha baholang.
 
 MAVZU: {topic}
+
+AUDIO UZUNLIGI: {duration} soniya.
+MUHIM: Javob uzunligi shu MAVZU talabiga mosligini ham hisobga ol. Sobit soniya chegarasi \
+YO'Q — mavzuning kengligi/murakkabligidan kelib chiqib, javob mavzuni yetarlicha ochib \
+berganini o'zing bahola. Oddiy/qisqa mavzuga qisqa javob normal bo'lishi mumkin, keng/murakkab \
+mavzu esa to'liqroq javob talab qiladi. Mavzuga nisbatan javob yuzaki yoki chala bo'lsa, ballni pasaytir.
 
 Faqat JSON qaytar: {{"score": <0 dan 10 gacha butun son>, "feedback": "<o'zbek tilida 2-3 gaplik qisqa izoh>"}}
 Agar audioda nutq bo'lmasa yoki ingliz tilida bo'lmasa, 0 ball ber."""
@@ -92,7 +103,8 @@ def _parse_response(raw_text: str) -> tuple[int, str]:
 
 async def evaluate_writing(topic: str, text: str) -> tuple[int, str]:
     """Writing matnini baholash → (ball 0-10, feedback)."""
-    prompt = WRITING_PROMPT.format(topic=topic, text=text)
+    word_count = len((text or "").split())
+    prompt = WRITING_PROMPT.format(topic=topic, text=text, word_count=word_count)
     try:
         resp = await asyncio.to_thread(
             _model.generate_content, prompt,
@@ -104,9 +116,11 @@ async def evaluate_writing(topic: str, text: str) -> tuple[int, str]:
         return 0, "Texnik sabablarga ko'ra baholab bo'lmadi."
 
 
-async def evaluate_speaking(topic: str, audio_bytes: bytes, mime_type: str = "audio/ogg") -> tuple[int, str]:
+async def evaluate_speaking(
+    topic: str, audio_bytes: bytes, mime_type: str = "audio/ogg", duration: int = 0
+) -> tuple[int, str]:
     """Speaking audiosini baholash → (ball 0-10, feedback)."""
-    prompt = SPEAKING_PROMPT.format(topic=topic)
+    prompt = SPEAKING_PROMPT.format(topic=topic, duration=duration)
     audio_part = {"mime_type": mime_type, "data": audio_bytes}
     try:
         resp = await asyncio.to_thread(

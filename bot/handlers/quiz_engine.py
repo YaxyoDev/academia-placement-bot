@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 router = Router(name="quiz_engine")
 
 SECTION_TITLES = {
-    "grammar": "📝 Grammar",
+    "grammar": "📝 Grammar & Vocabulary",
     "reading": "📖 Reading",
     "listening": "🎧 Listening",
 }
